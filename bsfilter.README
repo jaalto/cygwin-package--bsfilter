@@ -9,12 +9,13 @@ and stores from IMAP server, reads from POP server and passes to POP
 client (POP proxy). Program also supports of Japanese text.
 
 Runtime requirements:
-  cygwin
+  ruby
 
 Build requirements:
   cygwin
 
 Canonical homepage:
+  http://freecode.com/projects/bsfilter
   http://sourceforge.jp/projects/bsfilter
   http://packages.debian.org/bsfilter
 
@@ -40,58 +41,33 @@ Language:
 ------------------------------------
 
 Build instructions:
-  unpack bsfilter-1.0.15-1-src.tar.bz2
+  unpack bsfilter-1.0.17-1-src.tar.bz2
     if you use setup to install this src package, it will be
     unpacked under /usr/src automatically
   cd /usr/src
   ./bsfilter*.sh all
 
 This will create:
-  bsfilter-1.0.15-1.tar.bz2
-  bsfilter-1.0.15-1-src.tar.bz2
+  bsfilter-1.0.17-1.tar.bz2
+  bsfilter-1.0.17-1-src.tar.bz2
 
 -------------------------------------------
 
 Files included in the binary distro:
-
-usr/bin/bsfilter
-usr/share/doc/Cygwin/bsfilter-1.0.15.README
-usr/share/doc/bsfilter-1.0.15/COPYING
-usr/share/doc/bsfilter-1.0.15/htdocs/bsfilter.css
-usr/share/doc/bsfilter-1.0.15/htdocs/bsfilter.obj
-usr/share/doc/bsfilter-1.0.15/htdocs/imap.png
-usr/share/doc/bsfilter-1.0.15/htdocs/index-e.html
-usr/share/doc/bsfilter-1.0.15/htdocs/index.html
-usr/share/doc/bsfilter-1.0.15/htdocs/judge.png
-usr/share/doc/bsfilter-1.0.15/htdocs/mew.html
-usr/share/doc/bsfilter-1.0.15/htdocs/pop-with-bsfilter.png
-usr/share/doc/bsfilter-1.0.15/htdocs/pop-without-bsfilter.png
-usr/share/doc/bsfilter-1.0.15/htdocs/pop.png
-usr/share/doc/bsfilter-1.0.15/htdocs/pops-with-bsfilter.png
-usr/share/doc/bsfilter-1.0.15/htdocs/pops-without-bsfilter.png
-usr/share/doc/bsfilter-1.0.15/htdocs/prepare.png
-usr/share/doc/bsfilter-1.0.15/mda/maildrop/mailfilter.header
-usr/share/doc/bsfilter-1.0.15/mda/procmail/procmailrc.black_gray
-usr/share/doc/bsfilter-1.0.15/mda/procmail/procmailrc.header
-usr/share/doc/bsfilter-1.0.15/mda/procmail/procmailrc.status
-usr/share/doc/bsfilter-1.0.15/mua/mew3/bs_clean
-usr/share/doc/bsfilter-1.0.15/mua/mew3/bs_mark
-usr/share/doc/bsfilter-1.0.15/mua/mew3/bs_spam
-usr/share/doc/bsfilter-1.0.15/mua/mew3/mew.el
-usr/share/doc/bsfilter-1.0.15/mua/mew4/emacs.el
-usr/share/doc/bsfilter-1.0.15/mua/mew4/mew.el
-usr/share/doc/bsfilter-1.0.15/mua/mew5/mew.el
-usr/share/man/man1/bsfilter.1.gz
+  See Cygwin package archive
 
 ------------------
 
 Port Notes:
 - This port is based on Debian package.
-- No manual pages. Copied from Debian (changes in bsfilter.1.diff).
+- No manual pages. Copied from Debian (changes in bsfilter.1.*.diff).
 - No Makefile. Created.
+
+----- version 1.0.17-1 -----
+- New upstream release 2012-01-30 Jari Aalto
 
 ----- version 1.0.15-1 -----
 - Initial release 2007-09-19 Jari Aalto
 
 Cygwin port maintained by: Jari Aalto <jari.aalto@cante.net>
-Copyright (C) 2007 Jari Aalto; Licenced under GPL v2 or later
+Copyright (C) 2007-2012 Jari Aalto; Licenced under GPL v2 or later
