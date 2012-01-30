@@ -1,7 +1,7 @@
---- bsfilter.1.orig	2004-10-06 11:37:34.000000000 +0300
-+++ bsfilter.1	2004-10-06 11:38:04.000000000 +0300
-@@ -298,16 +298,11 @@
- http://www.ruby-lang.org/ 
+--- bsfilter.1-debian-1.0.17-1.1	2012-01-30 16:05:50.702142600 +0200
++++ bsfilter.1	2012-01-30 16:07:53.821776800 +0200
+@@ -273,16 +273,11 @@
+ http://sourceforge.jp/projects/bsfilter/ 
  .SH "AUTHOR" 
  .PP 
 -The original manual is in the bsfilter command it self which 
@@ -22,4 +22,4 @@
 +under the terms of the GNU General Public License, Version 2 any later
 +version published by the Free Software Foundation.
   
- .\" created by instant / docbook-to-man, Sat 14 Aug 2004, 19:00 
+ .\" created by instant / docbook-to-man, Thu 05 May 2011, 04:22 
