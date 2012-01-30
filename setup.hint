@@ -1,0 +1,7 @@
+sdesc: "Bayesian spam filter with Japanese support"
+ldesc: "A spam filter which can distinguish spam mail from other mails. It can
+read mails by three way: reads from normal file or stdin, retrieves
+and stores from IMAP server, reads from POP server and passes to POP
+client (POP proxy). Program also supports of Japanese text."
+category: Mail
+requires: cygwin ruby

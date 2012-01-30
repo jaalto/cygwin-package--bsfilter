@@ -1,0 +1,25 @@
+--- bsfilter.1.orig	2004-10-06 11:37:34.000000000 +0300
++++ bsfilter.1	2004-10-06 11:38:04.000000000 +0300
+@@ -298,16 +298,11 @@
+ http://www.ruby-lang.org/ 
+ .SH "AUTHOR" 
+ .PP 
+-The original manual is in the bsfilter command it self which 
+-is written by NABEYA Kenichi (upstream author). This manual page 
+-was transrated from the manual by akira yamada <akira@debian.org> 
+-for the \fBDebian\fP system (but may be used by others).  Permission 
+-is granted to copy, distribute and/or modify this document under 
+-the terms of the GNU General Public License, Version 2 any 
+-later version published by the Free Software Foundation. 
+- 
+-.PP 
+-On Debian systems, the complete text of the GNU General Public 
+-License can be found in /usr/share/common-licenses/GPL. 
++The original manual is in the bsfilter command it self which is
++written by NABEYA Kenichi (upstream author). This manual page was
++transrated from the manual by akira yamada <akira@debian.org>.
++Permission is granted to copy, distribute and/or modify this document
++under the terms of the GNU General Public License, Version 2 any later
++version published by the Free Software Foundation.
+  
+ .\" created by instant / docbook-to-man, Sat 14 Aug 2004, 19:00 
