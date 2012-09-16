@@ -41,15 +41,15 @@ Language:
 ------------------------------------
 
 Build instructions:
-  unpack bsfilter-1.0.17-1-src.tar.bz2
+  unpack bsfilter-1.0.18.20120916-1-src.tar.bz2
     if you use setup to install this src package, it will be
     unpacked under /usr/src automatically
   cd /usr/src
   ./bsfilter*.sh all
 
 This will create:
-  bsfilter-1.0.17-1.tar.bz2
-  bsfilter-1.0.17-1-src.tar.bz2
+  bsfilter-1.0.18.20120916-1.tar.bz2
+  bsfilter-1.0.18.20120916-1-src.tar.bz2
 
 -------------------------------------------
 
@@ -62,6 +62,9 @@ Port Notes:
 - This port is based on Debian package.
 - No manual pages. Copied from Debian (changes in bsfilter.1.*.diff).
 - No Makefile. Created.
+
+----- version 1.0.18.20120916-1 -----
+- New upstream release 2012-09-16 Jari Aalto
 
 ----- version 1.0.17-1 -----
 - New upstream release 2012-01-30 Jari Aalto
