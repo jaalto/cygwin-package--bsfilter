@@ -1,0 +1,137 @@
+Index: bsfilter/bsfilter/bsfilter
+===================================================================
+--- bsfilter.orig/bsfilter/bsfilter	2013-12-22 18:34:24.299015096 +0100
++++ bsfilter/bsfilter/bsfilter	2013-12-22 18:34:24.291015147 +0100
+@@ -74,7 +74,6 @@ class Bsfilter
+   
+   SDBM_ext = ".sdbm"
+   GDBM_ext = ".gdbm"
+-  BDB1_ext = ".bdb1"
+   BDB_ext = ".bdb"
+   QDBM_ext = ".qdbm"
+   
+@@ -792,29 +791,6 @@ EOM
+     end
+   end
+   
+-  class TokenBDB1 < TokenDBM
+-    def initialize(options, language, ext)
+-      @filename = options["homedir"] + language + ext + BDB1_ext
+-      @lockfile = options["homedir"] + language + ext + BDB1_ext + Lock_ext
+-      super
+-    end
+-    def clear
+-      @file_count = 0
+-      @dbm.close
+-      begin
+-        File::unlink(@filename)
+-      rescue
+-      end
+-      @dbm = open_dbm(@filename, 0600)
+-      if (@options["verbose"])
+-        @options["message-fh"].printf("reopen %s by %d.\n", @filename, Process::pid)
+-      end
+-    end
+-    def open_dbm(filename, mode)
+-      BDB1::Hash.open(filename, BDB1::CREATE | BDB1::WRITE, mode)
+-    end
+-  end
+-
+   class TokenBDB < TokenDBM
+     def initialize(options, language, ext)
+       @filename = options["homedir"] + language + ext + BDB_ext
+@@ -1598,10 +1574,6 @@ EOM
+         @clean = TokenGDBM::new(@options, lang, Clean_ext)
+         @spam = TokenGDBM::new(@options, lang, Spam_ext)
+         @prob = TokenGDBM::new(@options, lang, Prob_ext)
+-      when "bdb1"
+-        @clean = TokenBDB1::new(@options, lang, Clean_ext)
+-        @spam = TokenBDB1::new(@options, lang, Spam_ext)
+-        @prob = TokenBDB1::new(@options, lang, Prob_ext)
+       when "bdb"
+         @clean = TokenBDB::new(@options, lang, Clean_ext)
+         @spam = TokenBDB::new(@options, lang, Spam_ext)
+@@ -1981,7 +1953,7 @@ OPTIONS
+ 		check and/or study the first number of lines
+ 		default is #{Default_max_line}. 0 means all
+ 
+-	--db sdbm|gdbm|bdb1|bdb|qdbm
++	--db sdbm|gdbm|bdb|qdbm
+ 		specify the name of database type
+ 		"sdbm" by default
+ 
+@@ -3151,8 +3123,6 @@ EOM
+       require 'sdbm'
+     when "gdbm"
+       require 'gdbm'
+-    when "bdb1"
+-      require 'bdb1'
+     when "bdb"
+       require 'bdb'
+     when "qdbm"
+Index: bsfilter/test/test.rb
+===================================================================
+--- bsfilter.orig/test/test.rb	2013-12-22 18:34:24.299015096 +0100
++++ bsfilter/test/test.rb	2013-12-22 18:34:24.291015147 +0100
+@@ -73,9 +73,6 @@ def unlink_all
+   unlink_prob_gdbm({:force => true})
+   unlink_token_gdbm({:force => true})
+ 
+-  unlink_prob_bdb1({:force => true})
+-  unlink_token_bdb1({:force => true})
+-
+   unlink_prob_bdb({:force => true})
+   unlink_token_bdb({:force => true})
+ 
+@@ -124,25 +121,6 @@ def unlink_token_gdbm(options = {})
+                   "ja.spam.gdbm.lock"], options)
+ end
+ 
+-def unlink_prob_bdb1(options = {})
+-    FileUtils.rm(["C.prob.bdb1",
+-                  "C.prob.bdb1.lock",
+-                  "ja.prob.bdb1",
+-                  "ja.prob.bdb1.lock"], options)
+-end
+-
+-
+-def unlink_token_bdb1(options = {})
+-    FileUtils.rm(["C.clean.bdb1",
+-                  "C.clean.bdb1.lock",
+-                  "ja.clean.bdb1",
+-                  "ja.clean.bdb1.lock",
+-                  "C.spam.bdb1",
+-                  "C.spam.bdb1.lock",
+-                  "ja.spam.bdb1",
+-                  "ja.spam.bdb1.lock"], options)
+-end
+-
+ def unlink_prob_bdb(options = {})
+     FileUtils.rm(["C.prob.bdb",
+                   "C.prob.bdb.lock",
+@@ -444,25 +422,6 @@ class TestDBM < Test::Unit::TestCase
+     unlink_prob_gdbm
+   end
+ 
+-  def test_bdb1
+-    assert_nothing_raised('Warning: ignore this test if BDB1 is NOT installed') do
+-      @bsfilter.setup($default_options + ["--db", "bdb1", "-c"])
+-    end
+-    @bsfilter.use_dummyfh
+-    @bsfilter.run(@files)
+-    assert(File::readable?("ja.clean.bdb1"), "ja.clean.bdb1")
+-    assert(File::readable?("C.clean.bdb1"), "C.clean.bdb1")
+-
+-    @bsfilter.setup($default_options + ["--db", "bdb1", "-u"])
+-    @bsfilter.use_dummyfh
+-    @bsfilter.run([])
+-    assert(File::readable?("ja.prob.bdb1"), "ja.prob.bdb1")
+-    assert(File::readable?("C.prob.bdb1"), "C.prob.bdb1")
+-
+-    unlink_token_bdb1
+-    unlink_prob_bdb1
+-  end
+-
+   def test_bdb
+     assert_nothing_raised('Warning: ignore this test if BDB is NOT installed') do
+       @bsfilter.setup($default_options + ["--db", "bdb", "-c"])

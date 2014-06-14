@@ -1,0 +1,136 @@
+Index: bsfilter/bsfilter/bsfilter
+===================================================================
+--- bsfilter.orig/bsfilter/bsfilter	2014-02-14 15:53:15.331487185 +0100
++++ bsfilter/bsfilter/bsfilter	2014-02-14 15:53:55.626996360 +0100
+@@ -1068,11 +1068,6 @@ EOM
+         else
+           @m_dic_enc = Encoding::default_external
+         end
+-      when "chasen"
+-        Chasen.getopt("-F", '%H %m\n', "-j")
+-        @method = Proc::new {|s| chasen(s)}
+-      when "kakasi"
+-        @method = Proc::new {|s| kakasi(s)}
+       else
+         raise "internal error: unknown method #{method}"
+       end
+@@ -1095,21 +1090,6 @@ EOM
+     Reg_not_kanji_katakana = Regexp::compile("[^\xb0\xa1-\xf4\xa4\xa1\xbc\xa5\xa1-\xa5\xf6]".force_encoding('EUC-JP'))
+ #     Reg_not_kanji_katakana = Regexp::compile("[^\xb0\xa1-\xf4\xa4\xa1\xbc\xa5\xa1-\xa5\xf6]".force_encoding('ASCII-8BIT'))
+     
+-    def kakasi(str)
+-      str = str.gsub(/[\x00-\x7f]/, ' ')
+-      if (str =~ /\A +\z/)
+-        return []
+-      end
+-      array = Array::new
+-      Kakasi::kakasi("-oeuc -w", str).scan(/\S+/).each do |token|
+-        token.gsub!(Reg_not_kanji_katakana, '')
+-        if ((token =~ Reg_kanji) || (token.length > 2))
+-          array.push(token)
+-        end
+-      end
+-      return array
+-    end
+-    
+     def mecab(str)
+       str = str.encode(@m_dic_enc, :invalid => :replace, :undef => :replace, :replace => ' ')
+       str = str.gsub(/[\x00-\x7f]/, ' ')
+@@ -1152,31 +1132,6 @@ EOM
+       return array
+     end
+     
+-    def chasen(str)
+-      str = str.gsub(/[\x00-\x7f]/, ' ')
+-      if (str =~ /\A +\z/)
+-        return []
+-      end
+-      array = Array::new
+-      Chasen.sparse(str).split("\n").each do |hinshi_token|
+-        if (hinshi_token =~ /(.*) (.*)/)
+-          hinshi = $1
+-          token = $2
+-          if (hinshi == "\xcc\xbe\xbb\xec")
+-            if ((token =~ Reg_kanji_katakana) || (token.length > 2))
+-              array.push(token)
+-            end
+-          else
+-            token.gsub!(Reg_not_kanji_katakana, '')
+-            if ((token =~ Reg_kanji) || (token.length > 2))
+-              array.push(token)
+-            end
+-          end
+-        end
+-      end
+-      return array
+-    end
+-    
+     def block(str)
+       tokens = str.scan(Reg_kanji)
+       tokens.concat(str.scan(Reg_katakana))
+@@ -2013,7 +1968,7 @@ OPTIONS
+ 		specify the name of database type
+ 		"sdbm" by default
+ 
+-        --jtokenizer|-j bigram|block|mecab|chasen|kakasi
++        --jtokenizer|-j bigram|block|mecab
+ 		specify algorithm of a tokenizer for Japanese language
+ 		"bigram" by default
+ 
+@@ -3199,10 +3154,6 @@ EOM
+     when "block"
+     when "mecab"
+       require 'MeCab'
+-    when "chasen"
+-      require 'chasen.o'
+-    when "kakasi"
+-      require 'kakasi'
+     else
+       soft_raise(sprintf("#{$0}: unsupported argument `%s' for --jtokenizer or -j\n", options["jtokenizer"]))
+     end
+Index: bsfilter/test/test.rb
+===================================================================
+--- bsfilter.orig/test/test.rb	2014-02-14 15:53:15.331487185 +0100
++++ bsfilter/test/test.rb	2014-02-14 15:53:19.000000000 +0100
+@@ -228,14 +228,9 @@ class TestMultipleInstances < Test::Unit
+     @bsfilter2.setup($default_options + ["--jtokenizer", "bigram"])
+     @bsfilter2.use_dummyfh
+ 
+-    @bsfilter3 = Bsfilter::new
+-    @bsfilter3.setup($default_options + ["--jtokenizer", "chasen"])
+-    @bsfilter3.use_dummyfh
+-
+     @bsfilter0.run(@files)
+     @bsfilter1.run(@files)
+     @bsfilter2.run(@files)
+-    @bsfilter3.run(@files)
+ 
+     assert_equal(1, @bsfilter0.count_message(/tokenizer ja body 朝顔/),  "@bsfilter0 2letters")
+     assert_equal(0, @bsfilter0.count_message(/tokenizer ja body 向日葵/), "@bsfilter0 3letters")
+@@ -245,9 +240,6 @@ class TestMultipleInstances < Test::Unit
+ 
+     assert_equal(1, @bsfilter2.count_message(/tokenizer ja body 朝顔/), "@bsfilter2 2letters")
+     assert_equal(0, @bsfilter2.count_message(/tokenizer ja body 向日葵/), "@bsfilter2 3letters")
+-
+-    assert_equal(1, @bsfilter3.count_message(/tokenizer ja body 朝顔/), "@bsfilter3 2letters")
+-    assert_equal(1, @bsfilter3.count_message(/tokenizer ja body 向日葵/), "@bsfilter3 3letters")
+   end
+ 
+   def teardown
+@@ -336,16 +328,6 @@ class TestJtokenizer < Test::Unit::TestC
+     end
+     @bsfilter.use_dummyfh
+     @bsfilter.run(@files)
+-    assert_equal(1, @bsfilter.count_message(/tokenizer ja body 朝顔/), "2 letters")
+-    assert_equal(1, @bsfilter.count_message(/tokenizer ja body 向日葵/), "3 letters")
+-  end
+-
+-  def test_chasen
+-    assert_nothing_raised('Warning: ignore this test if chasen is NOT installed') do
+-      @bsfilter.setup($default_options + ["--jtokenizer", "chasen"])
+-    end
+-    @bsfilter.use_dummyfh
+-    @bsfilter.run(@files)
+     assert_equal(1, @bsfilter.count_message(/tokenizer ja body 朝顔/), "2 letters")
+     assert_equal(1, @bsfilter.count_message(/tokenizer ja body 向日葵/), "3 letters")
+   end
