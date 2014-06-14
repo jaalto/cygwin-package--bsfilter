@@ -41,15 +41,15 @@ Language:
 ------------------------------------
 
 Build instructions:
-  unpack bsfilter-1.0.18.20120916-1-src.tar.bz2
+  unpack bsfilter-1.0.19-1-src.tar.bz2
     if you use setup to install this src package, it will be
     unpacked under /usr/src automatically
   cd /usr/src
   ./bsfilter*.sh all
 
 This will create:
-  bsfilter-1.0.18.20120916-1.tar.bz2
-  bsfilter-1.0.18.20120916-1-src.tar.bz2
+  bsfilter-1.0.19-1.tar.xz
+  bsfilter-1.0.19-1-src.tar.xz
 
 -------------------------------------------
 
@@ -63,6 +63,9 @@ Port Notes:
 - No manual pages. Copied from Debian (changes in bsfilter.1.*.diff).
 - No Makefile. Created.
 
+----- version 1.0.19-1 -----
+- New upstream release 2014-06-14 Jari Aalto
+
 ----- version 1.0.18.20120916-1 -----
 - New upstream release 2012-09-16 Jari Aalto
 - Upstream release name: 1.0.18.ruby1.9.rc1
@@ -74,4 +77,4 @@ Port Notes:
 - Initial release 2007-09-19 Jari Aalto
 
 Cygwin port maintained by: Jari Aalto <jari.aalto@cante.net>
-Copyright (C) 2007-2012 Jari Aalto; Licenced under GPL v2 or later
+Copyright (C) 2007-2014 Jari Aalto; Licenced under GPL v2 or later
