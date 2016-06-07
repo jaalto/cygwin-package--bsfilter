@@ -1,3 +1,4 @@
+# ARCH=noarch
 sdesc: "Bayesian spam filter with Japanese support"
 ldesc: "A spam filter which can distinguish spam mail from other mails. It can
 read mails by three way: reads from normal file or stdin, retrieves
